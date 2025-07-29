@@ -195,8 +195,6 @@ BEGIN
         LEFT JOIN [WorkFlow].[UserJobInfo] AS [UserJobInfo]
             ON [User].UserId = [UserJobInfo].UserId
     WHERE [User].UserId = ISNULL(@UserId, [User].UserId)
-    --AND [UserJobInfo].Department = ISNULL(@Department, [UserJobInfo].Department)
-    --AND [UserJobInfo].Team = ISNULL(@Team, [UserJobInfo].Team)
     AND ISNULL([UserJobInfo].Department, '') = COALESCE(Department, [UserJobInfo].Department, '')
     AND ISNULL([UserJobInfo].Team, '') = COALESCE(@Team, [UserJobInfo].Team, '')
 END

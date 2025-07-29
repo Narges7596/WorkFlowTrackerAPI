@@ -58,17 +58,29 @@ CREATE TABLE [WorkFlow].[WorkLog] (
 GO
 
 CREATE TABLE [WorkFlow].[Project] (
-    [ProjectID] INT IDENTITY (1, 1) NOT NULL,
-    [Name]      NVARCHAR(100)  NOT NULL,
-    [Client]    NVARCHAR(100)  NOT NULL 
+    [ProjectId] INT IDENTITY (1, 1) NOT NULL,
+    [ProjectName]      NVARCHAR(100)  NOT NULL,
+    [ClientId]  INT  NOT NULL,
+    CONSTRAINT [UK_Project_Name] UNIQUE ([ProjectName])
 )
 GO
 
-CREATE TABLE [WorkFlow].[Tag] (
-    [TagId] INT IDENTITY (1, 1) NOT NULL,
-    [Name]  NVARCHAR(20) NOT NULL
+CREATE TABLE [WorkFlow].[Client] (
+    [ClientId] INT IDENTITY (1, 1) NOT NULL,
+    [ClientName]     NVARCHAR(100)  NOT NULL,
+    CONSTRAINT [UK_Client_ClientName] UNIQUE ([ClientName])
 )
 GO
+
+
+CREATE TABLE [WorkFlow].[Tag] (
+    [TagId] INT IDENTITY (1, 1) NOT NULL,
+    [TagName]  NVARCHAR(20) NOT NULL,
+    CONSTRAINT [UK_Tag_TagName] UNIQUE ([TagName])
+)
+GO
+-- ALTER TABLE [WorkFlow].[Client]
+-- ADD CONSTRAINT UK_Client_ClientName UNIQUE ([ClientName]);
 
 CREATE TABLE [WorkFlow].[WorkLogTag] (
     [TagId]     INT NOT NULL,
