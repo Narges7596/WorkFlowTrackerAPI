@@ -12,9 +12,7 @@ CREATE TABLE [WorkFlow].[User] (
     [Email]     VARCHAR(50)  NOT NULL,
     [FirstName] NVARCHAR(50) NOT NULL,
     [LastName]  NVARCHAR(50) NOT NULL,
-    [Role]      VARCHAR(50)  NULL,
     [Gender]    VARCHAR(50)  NOT NULL,
-    [Team]      VARCHAR(50)  NULL,
     CONSTRAINT [PK_User] PRIMARY KEY ([UserId]),
     CONSTRAINT [UK_User_Email] UNIQUE ([Email])
 )
@@ -30,8 +28,9 @@ GO
 
 CREATE TABLE [WorkFlow].[UserJobInfo] (
     [UserId]     INT         NOT NULL,
-    [Role]       VARCHAR(50) NOT NULL,
     [Department] VARCHAR(50) NULL,
+    [Role]       VARCHAR(50) NULL,
+    [Team]       VARCHAR(50) NULL,
     [DateJoined] DateTime    NOT NULL,
     CONSTRAINT [PK_UserJobInfo] PRIMARY KEY NONCLUSTERED ([UserId])
 )
@@ -40,12 +39,12 @@ GO
 CREATE TABLE [WorkFlow].[UserSalary] (
     [UserId] INT  NOT NULL,
     [Salary] INT  NOT NULL,
-    [WorkingDaysPerWeek] INT  NOT NULL,
+    [DaysPerWeek] INT  NOT NULL,
     [HoursPerDay] INT  NOT NULL,
     CONSTRAINT [PK_UserSalary] PRIMARY KEY NONCLUSTERED ([UserId])
 )
 GO
-
+-------------------------------------------------------
 CREATE TABLE [WorkFlow].[WorkLog] (
     [WorkLogId]   INT  IDENTITY (1, 1) NOT NULL,
     [UserId]      INT  NOT NULL,
@@ -77,7 +76,7 @@ CREATE TABLE [WorkFlow].[WorkLogTag] (
     CONSTRAINT [PK_WorkLogTag] PRIMARY KEY NONCLUSTERED ([TagId],[WorkLogId])
 )
 GO
-
+-------------------------------------------------------
 CREATE TABLE [WorkFlow].[timeOffRequest] (
     [RequestId]   INT IDENTITY (1, 1) NOT NULL,
     [UserId]      INT           NOT NULL,
@@ -90,60 +89,4 @@ CREATE TABLE [WorkFlow].[timeOffRequest] (
     [ApprovedBy]  INT           NULL,
     CONSTRAINT [PK_timeOffRequest] PRIMARY KEY NONCLUSTERED ([RequestId] ASC)
 )
-GO
-
-ALTER TABLE [WorkFlow].[User] WITH CHECK ADD CONSTRAINT [FK_User_UserId] FOREIGN KEY([UserId])
-REFERENCES [WorkFlow].[UserSalary] ([UserId])
-GO
-
-ALTER TABLE [WorkFlow].[User] CHECK CONSTRAINT [FK_User_UserId]
-GO
-
-ALTER TABLE [WorkFlow].[Auth] WITH CHECK ADD CONSTRAINT [FK_Auth_Email] FOREIGN KEY([Email])
-REFERENCES [WorkFlow].[User] ([Email])
-GO
-
-ALTER TABLE [WorkFlow].[Auth] CHECK CONSTRAINT [FK_Auth_Email]
-GO
-
-ALTER TABLE [WorkFlow].[UserJobInfo] WITH CHECK ADD CONSTRAINT [FK_UserJobInfo_UserId] FOREIGN KEY([UserId])
-REFERENCES [WorkFlow].[User] ([UserId])
-GO
-
-ALTER TABLE [WorkFlow].[UserJobInfo] CHECK CONSTRAINT [FK_UserJobInfo_UserId]
-GO
-
-ALTER TABLE [WorkFlow].[WorkLog] WITH CHECK ADD CONSTRAINT [FK_WorkLog_UserId] FOREIGN KEY([UserId])
-REFERENCES [WorkFlow].[User] ([UserId])
-GO
-
-ALTER TABLE [WorkLog] CHECK CONSTRAINT [FK_WorkLog_UserId]
-GO
-
-ALTER TABLE [Project] WITH CHECK ADD CONSTRAINT [FK_Project_ProjectID] FOREIGN KEY([ProjectID])
-REFERENCES [WorkLog] ([ProjectID])
-GO
-
-ALTER TABLE [Project] CHECK CONSTRAINT [FK_Project_ProjectID]
-GO
-
-ALTER TABLE [WorkLogTag] WITH CHECK ADD CONSTRAINT [FK_WorkLogTag_TagId] FOREIGN KEY([TagId])
-REFERENCES [Tag] ([TagId])
-GO
-
-ALTER TABLE [WorkLogTag] CHECK CONSTRAINT [FK_WorkLogTag_TagId]
-GO
-
-ALTER TABLE [WorkLogTag] WITH CHECK ADD CONSTRAINT [FK_WorkLogTag_WorkLogId] FOREIGN KEY([WorkLogId])
-REFERENCES [WorkLog] ([WorkLogId])
-GO
-
-ALTER TABLE [WorkLogTag] CHECK CONSTRAINT [FK_WorkLogTag_WorkLogId]
-GO
-
-ALTER TABLE [timeOffRequest] WITH CHECK ADD CONSTRAINT [FK_timeOffRequest_UserId] FOREIGN KEY([UserId])
-REFERENCES [User] ([UserId])
-GO
-
-ALTER TABLE [timeOffRequest] CHECK CONSTRAINT [FK_timeOffRequest_UserId]
 GO

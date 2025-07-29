@@ -1,5 +1,6 @@
 using Dapper;
 using DotnetAPI.Data;
+using DotnetAPI.DTOs;
 using DotnetAPI.Helpers;
 using DotnetAPI.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -16,24 +17,17 @@ namespace DotnetAPI.Controllers
     {
         private readonly DataContextDapper _dapper;
         private readonly ReusableSqls _reusableSqls;
+
         public UserController(IConfiguration config)
         {
             _dapper = new DataContextDapper(config);
             _reusableSqls = new ReusableSqls(config);
         }
 
-        [AllowAnonymous]
-        [HttpGet("TestConnection")]
-        public DateTime TestConnection()
+        [HttpGet("GetUsers/{userId}/{department}/{team}")]
+        public IEnumerable<UserCompleteDto> GetUsers(int userId = 0, string department = "None", string team = "None")
         {
-            return _dapper.LoadDataSingle<DateTime>("SELECT GETDATE()", null);
-        }
-
-
-        [HttpGet("GetUsers/{userId}/{isActive}")]
-        public IEnumerable<User> GetUsers(int userId = 0, bool isActive = false)
-        {
-            string sql = @"EXEC TutorialAppSchema.spUsers_Get";
+            string sql = @"EXEC WorkFlow.spUser_Get";
 
             string parameters = string.Empty;
             DynamicParameters sqlParameters = new DynamicParameters();
@@ -42,29 +36,35 @@ namespace DotnetAPI.Controllers
                 parameters += ", @UserId = @UserIdParam";
                 sqlParameters.Add("@UserIdParam", userId, DbType.Int32);
             }
-            if (isActive)
+            if (department != "None")
             {
-                parameters += ", @IsActive = @isActiveParam";
-                sqlParameters.Add("@isActiveParam", isActive, DbType.Boolean);
+                parameters += ", @Department = @DepartmentParam";
+                sqlParameters.Add("@DepartmentParam", department, DbType.String);
             }
-            sql += parameters.Substring(1);
+            if (team != "None")
+            {
+                parameters += ", @Team = @TeamParam";
+                sqlParameters.Add("@TeamParam", team, DbType.String);
+            }
+            if(!string.IsNullOrEmpty(parameters))
+                sql += parameters.Substring(1);
 
-            IEnumerable<User> users = _dapper.LoadData<User>(sql, sqlParameters);
+            IEnumerable<UserCompleteDto> users = _dapper.LoadData<UserCompleteDto>(sql, sqlParameters);
             return users;
         }
 
         [HttpPut("UpsertUser")]
-        public IActionResult UpsertUser(User user)
+        public IActionResult UpsertUser(UserCompleteDto user)
         {
             if (_reusableSqls.UpsertUser(user))
                 return Ok();
-            throw new Exception($"Fail to update user, id {user.UserId}");
+            throw new Exception($"Fail to insert or update user, id {user.UserId}");
         }
 
         [HttpDelete("DeleteUser/{userId}")]
         public IActionResult DeleteUser(int userId)
         {
-            string sql = "EXEC TutorialAppSchema.spUsers_Delete @UserId = @UserIdParam";
+            string sql = "EXEC WorkFlow.spUser_Delete @UserId = @UserIdParam";
             DynamicParameters sqlParameters = new DynamicParameters();
             sqlParameters.Add("@UserIdParam", userId, DbType.Int32);
 

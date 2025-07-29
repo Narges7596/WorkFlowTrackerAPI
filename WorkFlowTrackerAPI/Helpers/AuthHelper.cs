@@ -60,7 +60,7 @@ namespace DotnetAPI.Helpers
 
         public bool SetPassword(UserForLoginDto userForLogin)
         {
-            string sqlCheckEmailExists = "SELECT Email FROM TutorialAppSchema.Auth WHERE Email = @EmailParam";
+            string sqlCheckEmailExists = "SELECT Email FROM WorkFlow.Auth WHERE Email = @EmailParam";
             DynamicParameters sqlCheckParameters = new DynamicParameters();
             sqlCheckParameters.Add("@EmailParam", userForLogin.Email, DbType.String);
 
@@ -82,7 +82,7 @@ namespace DotnetAPI.Helpers
 
             // Insert into the database
             string sqlInsertAuth = @"
-            EXEC TutorialAppSchema.spRegistrationUpsert
+            EXEC WorkFlow.spRegistrationUpsert
                 @Email = @EmailParam,
                 @PasswordHash = @PasswordHashParam,
                 @PasswordSalt = @PasswordSaltParam";
@@ -99,7 +99,7 @@ namespace DotnetAPI.Helpers
         public bool CheckPassword(UserForLoginDto userForLogin)
         {
             // Check if the email exists in the database
-            string sqlCheckEmailExists = "EXEC TutorialAppSchema.spLoginConfirmation_Get @Email=@EmailParam";
+            string sqlCheckEmailExists = "EXEC WorkFlow.spLoginConfirmation_Get @Email=@EmailParam";
 
             // we have parameters to prevent SQL injection attacks.
             DynamicParameters sqlParameters = new DynamicParameters();
