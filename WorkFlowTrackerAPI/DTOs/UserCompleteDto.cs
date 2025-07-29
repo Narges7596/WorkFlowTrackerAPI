@@ -17,6 +17,5 @@
         public decimal Salary { get; set; }
         public int DaysPerWeek { get; set; } = 5;
         public int HoursPerDay { get; set; } = 8;
-
     }
 }

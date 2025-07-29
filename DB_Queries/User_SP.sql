@@ -51,7 +51,7 @@ CREATE OR ALTER PROCEDURE [WorkFlow].[spUser_Upsert]
     @Team       VARCHAR(50) = NULL,
     @DateJoined DATETIME = NULL,
 
-    @Salary     DECIMAL(18, 4),
+    @Salary     DECIMAL(18, 4) = NULL,
     @DaysPerWeek INT = 5,
     @HoursPerDay INT = 8,
 

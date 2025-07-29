@@ -60,14 +60,6 @@ namespace DotnetAPI.Helpers
 
         public bool SetPassword(UserForLoginDto userForLogin)
         {
-            string sqlCheckEmailExists = "SELECT Email FROM WorkFlow.Auth WHERE Email = @EmailParam";
-            DynamicParameters sqlCheckParameters = new DynamicParameters();
-            sqlCheckParameters.Add("@EmailParam", userForLogin.Email, DbType.String);
-
-            IEnumerable<string> existingEmail = _dapper.LoadData<string>(sqlCheckEmailExists, sqlCheckParameters);
-            if (existingEmail.Count() != 0)
-                throw new Exception("User with this email already exists");
-
             // Generate a secure random salt for the password hashing.
             // 128 bits = 16 bytes (ensures the salt is 16 bytes, which is a secure and standard length for password salting.
             byte[] passwordSalt = new byte[128 / 8];
@@ -82,7 +74,7 @@ namespace DotnetAPI.Helpers
 
             // Insert into the database
             string sqlInsertAuth = @"
-            EXEC WorkFlow.spRegistrationUpsert
+            EXEC [WorkFlow].spRegistrationUpsert
                 @Email = @EmailParam,
                 @PasswordHash = @PasswordHashParam,
                 @PasswordSalt = @PasswordSaltParam";
@@ -99,7 +91,7 @@ namespace DotnetAPI.Helpers
         public bool CheckPassword(UserForLoginDto userForLogin)
         {
             // Check if the email exists in the database
-            string sqlCheckEmailExists = "EXEC WorkFlow.spLoginConfirmation_Get @Email=@EmailParam";
+            string sqlCheckEmailExists = "EXEC [WorkFlow].spLoginConfirmation_Get @Email=@EmailParam";
 
             // we have parameters to prevent SQL injection attacks.
             DynamicParameters sqlParameters = new DynamicParameters();
