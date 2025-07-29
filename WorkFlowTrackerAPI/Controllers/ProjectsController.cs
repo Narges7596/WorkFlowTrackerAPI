@@ -1,11 +1,9 @@
 using Dapper;
 using DotnetAPI.Data;
-using DotnetAPI.DTOs;
 using DotnetAPI.Helpers;
 using DotnetAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Data;
 
 namespace DotnetAPI.Controllers
@@ -16,12 +14,10 @@ namespace DotnetAPI.Controllers
     public class ProjectsController : ControllerBase
     {
         private readonly DataContextDapper _dapper;
-        private readonly ReusableSqls _reusableSqls;
 
         public ProjectsController(IConfiguration config)
         {
             _dapper = new DataContextDapper(config);
-            _reusableSqls = new ReusableSqls(config);
         }
 
         [HttpGet("GetProjects/{projectId}")]

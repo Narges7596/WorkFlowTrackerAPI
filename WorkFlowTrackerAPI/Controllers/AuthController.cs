@@ -1,13 +1,11 @@
 ﻿using AutoMapper;
 using Dapper;
 using DotnetAPI.Data;
-using DotnetAPI.Models;
 using DotnetAPI.DTOs;
 using DotnetAPI.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
-using System.Globalization;
 
 namespace DotnetAPI.Controllers
 {
