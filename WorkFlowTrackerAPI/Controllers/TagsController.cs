@@ -21,7 +21,7 @@ namespace DotnetAPI.Controllers
         }
 
         [HttpGet("GetTags/{tagId}")]
-        public IEnumerable<Tag> GetTags(int tagId = 0, int clientId = 0)
+        public IEnumerable<Tag> GetTags(int tagId = 0)
         {
             string sql = @"EXEC [WorkFlow].[spTag_Get]";
 
