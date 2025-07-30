@@ -11,12 +11,12 @@ namespace DotnetAPI.Controllers
     [Authorize]
     [ApiController]
     [Route("[controller]")]
-    public class UserController : ControllerBase
+    public class UsersController : ControllerBase
     {
         private readonly DataContextDapper _dapper;
         private readonly ReusableSqls _reusableSqls;
 
-        public UserController(IConfiguration config)
+        public UsersController(IConfiguration config)
         {
             _dapper = new DataContextDapper(config);
             _reusableSqls = new ReusableSqls(config);
