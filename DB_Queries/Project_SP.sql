@@ -5,7 +5,7 @@ CREATE OR ALTER PROCEDURE [WorkFlow].[spProjectUpsert]
 -- EXEC [WorkFlow].spProjectUpsert
     @ProjectName NVARCHAR(50),
     @ClientId    INT,
-    @ProjectId   INT
+    @ProjectId   INT = NULL
 AS
 BEGIN
     IF NOT EXISTS (SELECT * FROM [WorkFlow].[Project] WHERE ProjectId = @ProjectId)
