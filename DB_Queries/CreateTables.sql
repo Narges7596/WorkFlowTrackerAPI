@@ -51,7 +51,7 @@ CREATE TABLE [WorkFlow].[WorkLog] (
     [WorkDay]     DATE NOT NULL,
     [StartTime]   TIME NOT NULL,
     [EndTime]     TIME NOT NULL,
-    [ProjectID]   INT  NOT NULL,
+    [ProjectId]   INT  NOT NULL,
     [Description] NVARCHAR(200) NOT NULL,
     CONSTRAINT [PK_WorkLog] PRIMARY KEY NONCLUSTERED ([WorkLogId])
 )
