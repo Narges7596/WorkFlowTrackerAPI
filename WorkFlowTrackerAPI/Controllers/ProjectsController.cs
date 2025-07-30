@@ -20,7 +20,7 @@ namespace DotnetAPI.Controllers
             _dapper = new DataContextDapper(config);
         }
 
-        [HttpGet("GetProjects/{projectId}")]
+        [HttpGet("GetProjects/{projectId}/{clientId}")]
         public IEnumerable<Project> GetProjects(int projectId = 0, int clientId = 0)
         {
             string sql = @"EXEC [WorkFlow].[spProject_Get]";

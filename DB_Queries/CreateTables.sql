@@ -89,16 +89,16 @@ CREATE TABLE [WorkFlow].[WorkLogTag] (
 )
 GO
 -------------------------------------------------------
-CREATE TABLE [WorkFlow].[timeOffRequest] (
-    [RequestId]   INT IDENTITY (1, 1) NOT NULL,
+CREATE TABLE [WorkFlow].[AbsentDay] (
+    [AbsentDayId] INT IDENTITY (1, 1) NOT NULL,
     [UserId]      INT           NOT NULL,
-    [StartDate]   DATE          NOT NULL,
-    [EndDate]     DATE          NOT NULL,
+    [StartDate]   DATETIME      NOT NULL,
+    [EndDate]     DATETIME      NOT NULL,
     [Type]        VARCHAR(50)   NOT NULL, -- CHECK (type IN ('vacation', 'sick', 'special', 'unpaid', 'other'))
     [Status]      VARCHAR(20)   NOT NULL, -- CHECK (status IN ('pending', 'approved', 'rejected'))
     [Description] NVARCHAR(200) NULL,
-    [RequestedAt] TIMESTAMP     NOT NULL,
+    [RequestedAt] DATETIME      NOT NULL,
     [ApprovedBy]  INT           NULL,
-    CONSTRAINT [PK_timeOffRequest] PRIMARY KEY NONCLUSTERED ([RequestId] ASC)
+    [ApprovedAt]  DATETIME      NULL,
 )
 GO
