@@ -96,7 +96,6 @@ GO
 
 CREATE OR ALTER PROCEDURE [WorkFlow].[spWorkLogTags_Get]
 -- EXEC WorkFlow.spWorkLogTags_Get
-    @UserId      INT = NULL,
     @WorkLogId   INT = NULL
 AS
 BEGIN
@@ -109,7 +108,6 @@ BEGIN
     JOIN [WorkFlow].[Tag] AS [Tag]
         ON [WorkLogTag].[TagId] = [Tag].[TagId]
     
-    WHERE [WorkLog].[UserId] = ISNULL(@UserId, [WorkLog].[UserId])
-    AND [WorkLogTag].[WorkLogId] = ISNULL(@WorkLogId, [WorkLogTag].[WorkLogId])
+    WHERE [WorkLogTag].[WorkLogId] = ISNULL(@WorkLogId, [WorkLogTag].[WorkLogId])
 END
 GO
